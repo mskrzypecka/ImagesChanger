@@ -82,6 +82,7 @@ public class MainJFrame extends javax.swing.JFrame implements PropertyChangeList
         getContentPane().add(jLabel1, java.awt.BorderLayout.CENTER);
 
         jButtonFilter.setText("Nałóż filtr");
+        jButtonFilter.setEnabled(false);
         jButtonFilter.setMaximumSize(new java.awt.Dimension(140, 50));
         jButtonFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,7 +100,11 @@ public class MainJFrame extends javax.swing.JFrame implements PropertyChangeList
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonFilterActionPerformed(ActionEvent evt) {
+        jButtonFilter.setEnabled(false);
 
+        task = new ApplyFilter();
+        task.addPropertyChangeListener(this);
+        task.execute();
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -107,10 +112,6 @@ public class MainJFrame extends javax.swing.JFrame implements PropertyChangeList
         javax.swing.filechooser.FileNameExtensionFilter filter = new javax.swing.filechooser.FileNameExtensionFilter("Grafika JPG", "jpg");
         fileChooser.setFileFilter(filter);
         //File [] files = fileChooser.getSelectedFiles();
-
-        task = new ApplyFilter();
-        task.addPropertyChangeListener(this);
-        task.execute();
 
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION)
@@ -125,6 +126,7 @@ public class MainJFrame extends javax.swing.JFrame implements PropertyChangeList
             Image imageTemp = image.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
             ImageIcon imageIcon = new ImageIcon(imageTemp);
             jLabel1.setIcon(imageIcon);
+            jButtonFilter.setEnabled(true);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
