@@ -8,12 +8,17 @@ public class ApplyFilter extends SwingWorker<Integer, Integer> {
     @Override
     protected Integer doInBackground() throws Exception {
 
-        while (this.progress < 100) {
-            this.progress += 10;
-            Thread.sleep(500);
-            this.setProgress(this.progress);
-        }
 
+//        while (this.progress < 100) {
+//            this.progress += 10;
+//            Thread.sleep(500);
+//            this.setProgress(this.progress);
+//        }
         return this.progress;
+    }
+
+    @Override
+    protected void done() {
+        this.progress = 100;
     }
 }
