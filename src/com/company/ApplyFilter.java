@@ -12,6 +12,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.Callable;
 
 public class ApplyFilter extends SwingWorker<Integer, Integer> {
+    public static final int THREADS = 9;
     private int progress;
     private int labelWidth, labelHeight;
     private File imageFile;
@@ -29,34 +30,38 @@ public class ApplyFilter extends SwingWorker<Integer, Integer> {
     protected Integer doInBackground() throws Exception {
         BufferedImage image = ImageIO.read(imageFile);
         ExecutorService service =  Executors.newFixedThreadPool(2);
-        List<Future<Integer>> taskList = new ArrayList<>();
-        int difX = image.getWidth()/9;
-        int difY = image.getHeight()/9;
+        List<Callable<Integer>> taskList = new ArrayList<>();
+        List<Future<Integer>> resultList;
 
-        for(int i=0; i<9; i++) {
+        System.out.println("Wymiar obrazka: x:" + image.getWidth() + ", y:" + image.getHeight());
+        int difX = image.getWidth()/THREADS;
+        int difY = image.getHeight()/THREADS;
+
+        for(int i=0; i<THREADS; i++) {
             Coords coord = new Coords(i*difX, i*difX+difX, i*difY, i*difY + difY);
-            Callable<Integer> pix = new ChangePixels(coord, image);
-            Future<Integer> result = service.submit(pix);
-            taskList.add(result);
+            taskList.add(new ChangePixels(coord, image));
         }
+
+        resultList = service.invokeAll(taskList);
 
         while (this.progress < 100) {
             int sum = 0;
-            for(Future<Integer> task : taskList){
+            for(Future<Integer> task : resultList){
                 sum += task.get();
             }
             this.progress = sum * 11;
             Thread.sleep(500);
             this.setProgress(this.progress);
         }
+        service.shutdown();
         this.processedImage = image;
 
         return this.progress;
     }
 
-
     @Override
     protected void done() {
+        System.out.println("done function");
         Image imageTemp = this.processedImage.getScaledInstance(labelWidth, labelHeight, Image.SCALE_SMOOTH);
         this.imageContainer.setIcon(new ImageIcon(imageTemp));
         this.progress = 100;
