@@ -2,6 +2,7 @@ package com.company;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -13,6 +14,8 @@ import javax.swing.*;
 public class MainJFrame extends javax.swing.JFrame implements PropertyChangeListener {
 
     private Image image;
+    private BufferedImage newImage;
+    private File file;
     public MainJFrame() {
         initComponents();
     }
@@ -102,7 +105,7 @@ public class MainJFrame extends javax.swing.JFrame implements PropertyChangeList
     private void jButtonFilterActionPerformed(ActionEvent evt) {
         jButtonFilter.setEnabled(false);
 
-        task = new ApplyFilter();
+        task = new ApplyFilter(file, this.jLabel1);
         task.addPropertyChangeListener(this);
         task.execute();
     }
@@ -116,7 +119,7 @@ public class MainJFrame extends javax.swing.JFrame implements PropertyChangeList
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
-            File file = fileChooser.getSelectedFile();
+            file = fileChooser.getSelectedFile();
             java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
             image = toolkit.getImage(file.toString());
             jLabel1.setText("");
