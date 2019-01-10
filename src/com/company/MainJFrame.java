@@ -105,7 +105,7 @@ public class MainJFrame extends javax.swing.JFrame implements PropertyChangeList
     private void jButtonFilterActionPerformed(ActionEvent evt) {
         jButtonFilter.setEnabled(false);
 
-        task = new ApplyFilter(file, this.jLabel1);
+        task = new ApplyFilter(file, this.jLabel1, jLabel1.getWidth(), jLabel1.getHeight());
         task.addPropertyChangeListener(this);
         task.execute();
     }
@@ -130,6 +130,7 @@ public class MainJFrame extends javax.swing.JFrame implements PropertyChangeList
             ImageIcon imageIcon = new ImageIcon(imageTemp);
             jLabel1.setIcon(imageIcon);
             jButtonFilter.setEnabled(true);
+            jProgressBar1.setValue(0);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
