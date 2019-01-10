@@ -1,6 +1,7 @@
 package com.company;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -53,6 +54,7 @@ public class MainJFrame extends javax.swing.JFrame implements PropertyChangeList
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
+        jButtonFilter = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jProgressBar1 = new javax.swing.JProgressBar(0,100);
 
@@ -67,7 +69,7 @@ public class MainJFrame extends javax.swing.JFrame implements PropertyChangeList
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, java.awt.BorderLayout.LINE_END);
+        getContentPane().add(jButton1, BorderLayout.WEST);
 
         jLabel1.setText("<tu będzie wczytany obraz>");
         jLabel1.setMaximumSize(new java.awt.Dimension(140, 50));
@@ -79,6 +81,15 @@ public class MainJFrame extends javax.swing.JFrame implements PropertyChangeList
         });
         getContentPane().add(jLabel1, java.awt.BorderLayout.CENTER);
 
+        jButtonFilter.setText("Nałóż filtr");
+        jButtonFilter.setMaximumSize(new java.awt.Dimension(140, 50));
+        jButtonFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFilterActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButtonFilter, BorderLayout.EAST);
+
         jProgressBar1.setMaximumSize(new java.awt.Dimension(140, 50));
         jProgressBar1.setValue(0);
         jProgressBar1.setStringPainted(true);
@@ -86,6 +97,10 @@ public class MainJFrame extends javax.swing.JFrame implements PropertyChangeList
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonFilterActionPerformed(ActionEvent evt) {
+
+    }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JFileChooser fileChooser = new JFileChooser();
@@ -126,6 +141,7 @@ public class MainJFrame extends javax.swing.JFrame implements PropertyChangeList
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonFilter;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JProgressBar jProgressBar1;
     private ApplyFilter task;
