@@ -41,13 +41,13 @@ public class ApplyFilter extends SwingWorker<Integer, Integer> {
             Coords coord = new Coords(i*difX, i*difX+difX, i*difY, i*difY + difY);
             taskList.add(new ChangePixels(coord, image));
         }
-
         resultList = service.invokeAll(taskList);
 
-        while (this.progress < 99) {
-            int sum = 0;
+        int sum = 0;
+        while (THREADS != sum) {
+            sum = 0;
             for(Future<Integer> task : resultList){
-                sum += task.get();
+                sum += task.isDone() ? 1 : 0;
             }
             this.progress = sum * 11;
             Thread.sleep(500);
