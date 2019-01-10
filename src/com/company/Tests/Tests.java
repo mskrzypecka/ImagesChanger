@@ -1,4 +1,6 @@
-package com.company;
+package com.company.Tests;
+
+import com.company.MainJFrame;
 
 import java.awt.EventQueue;
 
