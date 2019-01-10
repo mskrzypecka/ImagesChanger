@@ -14,7 +14,6 @@ import javax.swing.*;
 public class MainJFrame extends javax.swing.JFrame implements PropertyChangeListener {
 
     private Image image;
-    private BufferedImage newImage;
     private File file;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonFilter;

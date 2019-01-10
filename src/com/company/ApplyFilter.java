@@ -44,7 +44,7 @@ public class ApplyFilter extends SwingWorker<Integer, Integer> {
 
         resultList = service.invokeAll(taskList);
 
-        while (this.progress < 100) {
+        while (this.progress < 99) {
             int sum = 0;
             for(Future<Integer> task : resultList){
                 sum += task.get();
