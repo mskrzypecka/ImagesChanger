@@ -1,16 +1,17 @@
 package com.company;
 
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import javax.swing.*;
 /**
  *
  * @author Malgorzata
  */
-public class MainJFrame extends javax.swing.JFrame {
+public class MainJFrame extends javax.swing.JFrame implements PropertyChangeListener {
 
     private Image image;
-
     public MainJFrame() {
         initComponents();
     }
@@ -53,7 +54,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jProgressBar1 = new javax.swing.JProgressBar(0, task.getLengthOfTask());
+        jProgressBar1 = new javax.swing.JProgressBar(0,100);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Małgorzata Skrzypecka");
@@ -92,7 +93,7 @@ public class MainJFrame extends javax.swing.JFrame {
         fileChooser.setFileFilter(filter);
         //File [] files = fileChooser.getSelectedFiles();
 
-        task = new Task();
+        task = new ApplyFilter();
         task.addPropertyChangeListener(this);
         task.execute();
 
@@ -127,6 +128,12 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JProgressBar jProgressBar1;
-    private Task task;
+    private ApplyFilter task;
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        int progress = task.getProgress();
+        jProgressBar1.setValue(progress);
+    }
     // End of variables declaration//GEN-END:variables
 }
