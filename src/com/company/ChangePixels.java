@@ -17,7 +17,7 @@ class ChangePixels implements Callable<Integer> {
         int result = 0;
         System.out.println("Poczatek dla X: " + coords.minX + ", Y: " + coords.minY );
         for (int y = coords.minY; y <= coords.maxY; y++) {
-            for (int x = 0; x <= coords.maxX; x++) {
+            for (int x = coords.minX; x <= coords.maxX; x++) {
                 try {
                     int p = image.getRGB(x, y);
                     int a = (p >> 24) & 0xff;

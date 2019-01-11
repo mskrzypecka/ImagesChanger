@@ -12,7 +12,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.Callable;
 
 public class ApplyFilter extends SwingWorker<Integer, Integer> {
-    public static final int THREADS = 9;
+    public static final int THREADS_ROOT = 3;
     private int progress;
     private int labelWidth, labelHeight;
     private File imageFile;
@@ -29,22 +29,24 @@ public class ApplyFilter extends SwingWorker<Integer, Integer> {
     @Override
     protected Integer doInBackground() throws Exception {
         BufferedImage image = ImageIO.read(imageFile);
-        ExecutorService service =  Executors.newFixedThreadPool(2);
+        ExecutorService service =  Executors.newFixedThreadPool(4);
         List<Callable<Integer>> taskList = new ArrayList<>();
         List<Future<Integer>> resultList;
 
         System.out.println("Wymiar obrazka: x:" + image.getWidth() + ", y:" + image.getHeight());
-        int difX = image.getWidth()/THREADS;
-        int difY = image.getHeight()/THREADS;
+        int difX = image.getWidth()/THREADS_ROOT;
+        int difY = image.getHeight()/THREADS_ROOT;
 
-        for(int i=0; i<THREADS; i++) {
-            Coords coord = new Coords(i*difX, i*difX+difX, i*difY, i*difY + difY);
-            taskList.add(new ChangePixels(coord, image));
+        for(int i=0; i<THREADS_ROOT; i++) {
+            for(int j=0; j<THREADS_ROOT; j++) {
+                Coords coord = new Coords(i * difX, i * difX + difX, j * difY, j * difY + difY);
+                taskList.add(new ChangePixels(coord, image));
+            }
         }
         resultList = service.invokeAll(taskList);
 
         int sum = 0;
-        while (THREADS != sum) {
+        while (THREADS_ROOT*THREADS_ROOT != sum) {
             sum = 0;
             for(Future<Integer> task : resultList){
                 sum += task.isDone() ? 1 : 0;
