@@ -13,6 +13,7 @@ import java.util.concurrent.Callable;
 
 public class ApplyFilter extends SwingWorker<Integer, Integer> {
     public static final int THREADS_ROOT = 3;
+    public static int THREADS = THREADS_ROOT*THREADS_ROOT;
     private int progress;
     private int labelWidth, labelHeight;
     private File imageFile;
@@ -29,7 +30,7 @@ public class ApplyFilter extends SwingWorker<Integer, Integer> {
     @Override
     protected Integer doInBackground() throws Exception {
         BufferedImage image = ImageIO.read(imageFile);
-        ExecutorService service =  Executors.newFixedThreadPool(4);
+        ExecutorService service =  Executors.newFixedThreadPool(3);
         List<Callable<Integer>> taskList = new ArrayList<>();
         List<Future<Integer>> resultList;
 
@@ -46,13 +47,12 @@ public class ApplyFilter extends SwingWorker<Integer, Integer> {
         resultList = service.invokeAll(taskList);
 
         int sum = 0;
-        while (THREADS_ROOT*THREADS_ROOT != sum) {
+        while (THREADS != sum) {
             sum = 0;
             for(Future<Integer> task : resultList){
                 sum += task.isDone() ? 1 : 0;
             }
-            this.progress = sum * 11;
-            Thread.sleep(500);
+            this.progress = sum * (100/THREADS);
             this.setProgress(this.progress);
         }
         service.shutdown();
